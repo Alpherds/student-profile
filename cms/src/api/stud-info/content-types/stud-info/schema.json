@@ -11,16 +11,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "StudNo": {
+    "studno": {
       "type": "string"
     },
-    "LName": {
+    "lname": {
       "type": "string"
     },
-    "FName": {
+    "fname": {
       "type": "string"
     },
-    "MName": {
+    "mname": {
       "type": "string"
     },
     "course": {
@@ -35,7 +35,7 @@
     "address": {
       "type": "string"
     },
-    "ContactNo": {
+    "contactno": {
       "type": "biginteger"
     },
     "gender": {

@@ -452,24 +452,24 @@ export interface ApiStudInfoStudInfo extends Struct.CollectionTypeSchema {
   };
   attributes: {
     address: Schema.Attribute.String;
-    ContactNo: Schema.Attribute.BigInteger;
+    contactno: Schema.Attribute.BigInteger;
     course: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    FName: Schema.Attribute.String;
+    fname: Schema.Attribute.String;
     gender: Schema.Attribute.String;
-    LName: Schema.Attribute.String;
+    lname: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::stud-info.stud-info'
     > &
       Schema.Attribute.Private;
-    MName: Schema.Attribute.String;
+    mname: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     section: Schema.Attribute.String;
-    StudNo: Schema.Attribute.String;
+    studno: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

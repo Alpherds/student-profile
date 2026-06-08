@@ -1,0 +1,42 @@
+ const hanapstudent = ref('')
+
+    const titlecolumn = [
+        {
+            key: 'studno', title: 'Student Number' 
+        },
+        {
+            key: 'lname', title: 'Last Name' 
+        },
+            {
+            key: 'fname', title: 'First Name' 
+        },
+        {
+            key: 'mname', title: 'Middle Name' 
+        },
+            {
+            key: 'ylevel', title: 'Year Level' 
+        },
+        {
+            key: 'csection', title: 'Section' 
+        },
+
+    ]
+
+    const nilalamanngcolumn = [
+        {
+            studno: 1400031,
+            lname:'Dizon',
+            fname:'Alpher',
+            mname:'San Juan',
+            ylevel:'1st year',
+            csection:'A',
+        },
+         {
+            studno: 1400032,
+            lname:'Rizal',
+            fname:'Jose',
+            mname:'Santos',
+            ylevel:'2nd year',
+            csection:'A',
+        },
+    ]

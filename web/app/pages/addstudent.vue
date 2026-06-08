@@ -11,6 +11,7 @@
                         label="Student No."
                         prepend-inner-icon="mdi-numeric"
                         variant="outlined"
+                        v-model="student.studno"
                         ></v-text-field>
                     </v-col>
 
@@ -22,6 +23,7 @@
                         label="Last Name "
                         prepend-inner-icon="mdi-account-box-outline"
                         variant="outlined"
+                        v-model="student.lname"
                         ></v-text-field>
                     </v-col>
 
@@ -33,6 +35,7 @@
                         label="First Name "
                         prepend-inner-icon="mdi-account-box-outline"
                         variant="outlined"
+                        v-model="student.fname"
                         ></v-text-field>
                     </v-col>
 
@@ -44,6 +47,7 @@
                         label="Middle Name "
                         prepend-inner-icon="mdi-account-box-outline"
                         variant="outlined"
+                        v-model="student.mname"
                         ></v-text-field>
                     </v-col>
 
@@ -56,6 +60,7 @@
                          prepend-inner-icon="mdi-account-details-outline"
                         :items="['BSCS', 'DCT']"
                         variant="outlined"
+                         v-model="student.course"
                         ></v-combobox>
                     </v-col>
 
@@ -68,6 +73,7 @@
                          prepend-inner-icon="mdi-account-details-outline"
                         :items="['1st year', '2nd year', '3rd year', '4th year']"
                         variant="outlined"
+                        v-model="student.year"
                         ></v-combobox>
                     </v-col>
 
@@ -80,6 +86,7 @@
                          prepend-inner-icon="mdi-account-details-outline"
                         :items="['A', 'B' , 'C' , 'D']"
                         variant="outlined"
+                        v-model="student.section"
                         ></v-combobox>
                     </v-col>
 
@@ -91,6 +98,7 @@
                         label="Address "
                         prepend-inner-icon="mdi-card-account-details-outline"
                         variant="outlined"
+                        v-model="student.address"
                         ></v-text-field>
                     </v-col>
 
@@ -102,6 +110,7 @@
                         label="Contact No "
                         prepend-inner-icon=" mdi-card-account-phone-outline"
                         variant="outlined"
+                        v-model="student.contactno"
                         ></v-text-field>
                     </v-col>
 
@@ -114,6 +123,7 @@
                          prepend-inner-icon="mdi-gender-transgender"
                         :items="['Male', 'Female' , 'LGBTQ']"
                         variant="outlined"
+                        v-model="student.gender"
                         ></v-combobox>
                     </v-col>
                     
@@ -123,6 +133,7 @@
                         color="green"
                         size="small"
                         variant="outlined"
+                        @click="saveStudent"
                         >
                             Save
                         </v-btn>
@@ -164,11 +175,22 @@
                                 single-line
                             ></v-text-field>
 
-                             <v-data-table
-                                :headers="titlecolumn"
-                                :items="nilalamanngcolumn"
+                            <v-data-table
+                                :headers="[
+                                    { title: 'Student No.', key: 'studno' },
+                                    { title: 'Last Name', key: 'lname' },
+                                    { title: 'First Name', key: 'fname' },
+                                    { title: 'Middle Name', key: 'mname' },
+                                    { title: 'Course', key: 'course' },
+                                    { title: 'Year', key: 'year' },
+                                    { title: 'Section', key: 'section' },
+                                    { title: 'Address', key: 'address' },
+                                    { title: 'Contact No.', key: 'contactno' },
+                                    { title: 'Gender', key: 'gender'}
+                                ]"
+                                :items="students.map(item => item)"
                                 :search="hanapstudent"
-                            ></v-data-table>
+                            />
                         </v-card>
             </v-container>
         </v-main>
@@ -177,48 +199,82 @@
 
 
 <script setup>
+import { ref, onMounted } from 'vue'
 
-  const hanapstudent = ref('')
+const config = useRuntimeConfig()
 
-    const titlecolumn = [
-        {
-            key: 'studno', title: 'Student Number' 
-        },
-        {
-            key: 'lname', title: 'Last Name' 
-        },
+   const student = ref({
+    studno: '',
+    lname: '',
+    fname: '',
+    mname: '',
+    course: '',
+    year: '',
+    section: '',
+    address: '',
+    contactno: '',
+    gender  : '',
+   })
+
+   const students = ref([])
+
+
+   // Function to save student information to Strapi
+   const saveStudent = async () => {
+    try {
+        const response = await $fetch(
+            `${config.public.strapiUrl}/api/stud-infos`,
             {
-            key: 'fname', title: 'First Name' 
-        },
-        {
-            key: 'mname', title: 'Middle Name' 
-        },
-            {
-            key: 'ylevel', title: 'Year Level' 
-        },
-        {
-            key: 'csection', title: 'Section' 
-        },
+                method: 'POST',
+                body: {
+                    data: student.value
+                }
+            }
+        )
+            console.log(response)
 
-    ]
+            alert('Student information saved successfully!')
 
-    const nilalamanngcolumn = [
-        {
-            studno: 1400031,
-            lname:'Dizon',
-            fname:'Alpher',
-            mname:'San Juan',
-            ylevel:'1st year',
-            csection:'A',
-        },
-         {
-            studno: 1400032,
-            lname:'Rizal',
-            fname:'Jose',
-            mname:'Santos',
-            ylevel:'2nd year',
-            csection:'A',
-        },
-    ]
+            clearForm()
+
+            getStudents()
+    } catch (error) {
+    console.error('Error saving student information:', error)
+    alert('Failed to save student information. Please try again.')
+   }
+   } 
+
+   //function to get student information from Strapi
+   const getStudents = async () => {
+    try {
+         const response = await $fetch(
+            `${config.public.strapiUrl}/api/stud-infos`,
+            )
+            students.value = response.data
+    } catch (error) {
+        console.error('Error fetching student information:', error)
+        alert('Failed to fetch student information. Please try again.')
+    }
+   }
+
+   //clear form after saving
+    const clearForm = () => {
+     student.value = {
+           studno: '',
+    lname: '',
+    fname: '',
+    mname: '',
+    course: '',
+    year: '',
+    section: '',
+    address: '',
+    contactno: '',
+    gender  : '',
+     }
+    }
+
+    onMounted(() => {
+        getStudents()
+    })
 </script>
 
