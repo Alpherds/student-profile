@@ -277,6 +277,46 @@ const config = useRuntimeConfig()
      }
     }
 
+    const selectedDocumentId = ref(null)
+
+const selectStudent = (item) => {
+  selectedDocumentId.value = item.documentId
+
+  student.value = {
+    studno: item.studno,
+    lname: item.lname,
+    fname: item.fname,
+    mname: item.mname,
+    course: item.course,
+    year: item.year,
+    section: item.section,
+    address: item.address,
+    contactno: item.contactno,
+    gender: item.gender,
+  }
+}
+
+const deleteStudent = async () => {
+  if (!selectedDocumentId.value) {
+    alert('Please select a student first.')
+    return
+  }
+
+  try {
+    await $fetch(`${config.public.strapiUrl}/api/stud-infos/${selectedDocumentId.value}`, {
+      method: 'DELETE'
+    })
+
+    alert('Student deleted successfully!')
+    clearForm()
+    selectedDocumentId.value = null
+    getStudents()
+  } catch (error) {
+    console.error(error)
+    alert('Failed to delete student.')
+  }
+}
+
     onMounted(() => {
         getStudents()
     })
