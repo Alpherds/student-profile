@@ -158,6 +158,7 @@
                         color="red"
                         size="small"
                         variant="outlined"
+                        @click="deletestudent"
                         >
                             Delete
                         </v-btn>
@@ -190,6 +191,7 @@
                                 ]"
                                 :items="students.map(item => item)"
                                 :search="hanapstudent"
+                                @click:row="(event, row) => selectStudent(row.item)"
                             />
                         </v-card>
             </v-container>
@@ -218,6 +220,8 @@ const config = useRuntimeConfig()
 
    const students = ref([])
 
+   //search function
+   const hanapstudent = ref('')
 
    // Function to save student information to Strapi
    const saveStudent = async () => {
